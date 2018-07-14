@@ -1,8 +1,28 @@
-function getObj(vertices) {
-  let str = "# EthanThatOneKid\'s Object\r\n";
+// https://threejs.org/docs/#api/core/Geometry
+
+function createObj(vertices) {
+  let geometry = new THREE.Geometry();
+
   for (let i = 0; i < vertices.length; i++) {
-    let v = vertices[i];
-    str += `v ${v.x} ${v.y} ${v.z}\r\n`;
+
+    geometry.vertices.push(
+      new THREE.Vector3(
+        vertices[i].x,
+        vertices[i].y,
+        vertices[i].z
+      )
+    );
+
+    if (i % 3 == 0) {
+      geometry.faces.push(
+        new THREE.Face3(
+          i - 3,
+          i - 2,
+          i - 1
+        )
+      );
+    }
   }
-  return str;
+
+  return geometry;
 }
