@@ -2,8 +2,21 @@
 <html>
 <head>
   <title>p5.js 3d test</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="../../libraries/p5.js"></script>
   <script src="scripts/sketch.js"></script>
 </head>
-<body></body>
+<body>
+  <label>shape:</label>
+  <select id="shape-input" onclick="changeShape()">
+    <option>box</option>
+    <option>cone</option>
+    <option>cylinder</option>
+    <option>sphere</option>
+    <option>torus</option>
+  </select>
+
+  <div id="cnv-container"></div>
+
+</body>
 </html>
