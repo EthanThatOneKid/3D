@@ -28,6 +28,7 @@ function animate() {
 	requestAnimationFrame(animate);
 	mesh.rotation.x += 0.01;
 	mesh.rotation.y += 0.02;
+  mesh.rotation.z += 0.02;
   renderer.render(scene, camera);
 }
 
@@ -40,6 +41,12 @@ function changeShape() {
       break;
     case "circle":
       mesh = new THREE.Mesh(new THREE.CircleGeometry(0.2, 32), material);
+      break;
+    case "cone":
+      mesh = new THREE.Mesh(new THREE.ConeGeometry(0.2, 0.3, 32), material);
+      break;
+    case "cylinder":
+      mesh = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.2, 0.3, 32), material);
       break;
     default: /* PlaneGeometry */;
   }
