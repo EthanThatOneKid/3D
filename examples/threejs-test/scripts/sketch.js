@@ -48,6 +48,18 @@ function changeShape() {
     case "cylinder":
       mesh = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.2, 0.3, 32), material);
       break;
+    case "dodecahedron":
+      mesh = new THREE.Mesh(new THREE.DodecahedronGeometry(0.2, 0), material);
+      break;
+    case "icosahedron":
+      mesh = new THREE.Mesh(new THREE.IcosahedronGeometry(0.2, 0), material);
+      break;
+    case "octahedron":
+      mesh = new THREE.Mesh(new THREE.OctahedronGeometry(0.2, 0), material);
+      break;
+    case "ring":
+      mesh = new THREE.Mesh(new THREE.RingGeometry(0.2, 0.3, 32), material);
+      break;
     default: /* PlaneGeometry */;
   }
   scene.add(mesh);
