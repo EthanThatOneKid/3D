@@ -60,6 +60,9 @@ function changeShape() {
     case "ring":
       mesh = new THREE.Mesh(new THREE.RingGeometry(0.2, 0.3, 32), material);
       break;
+    case "sphere":
+      mesh = new THREE.Mesh(new THREE.SphereGeometry(0.3, 16, 16), material);
+      break;
     default: /* PlaneGeometry */;
   }
   scene.add(mesh);
