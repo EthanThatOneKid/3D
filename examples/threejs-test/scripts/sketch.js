@@ -63,6 +63,9 @@ function changeShape() {
     case "sphere":
       mesh = new THREE.Mesh(new THREE.SphereGeometry(0.3, 16, 16), material);
       break;
+    case "tetrahedron":
+      mesh = new THREE.Mesh(new THREE.TetrahedronGeometry(0.3), material);
+      break;
     default: /* PlaneGeometry */;
   }
   scene.add(mesh);
