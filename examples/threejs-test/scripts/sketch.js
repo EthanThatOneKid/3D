@@ -4,7 +4,7 @@ window.onload = () => {
 };
 
 const WIDTH = 400, HEIGHT = 400;
-let camera, scene, renderer;
+let camera, scene, renderer, orbit;
 let geometry, material, mesh;
 
 function init() {
@@ -22,6 +22,8 @@ function init() {
 	renderer = new THREE.WebGLRenderer({antialias: true});
 	renderer.setSize(WIDTH, HEIGHT);
 	$("#cnv-container").append(renderer.domElement);
+
+  orbit = new THREE.OrbitControls(camera, renderer.domElement);
 }
 
 function animate() {
@@ -65,6 +67,12 @@ function changeShape() {
       break;
     case "tetrahedron":
       mesh = new THREE.Mesh(new THREE.TetrahedronGeometry(0.3), material);
+      break;
+    case "torus":
+      mesh = new THREE.Mesh(new THREE.TorusGeometry(0.3, 0.1, 16, 100), material);
+      break;
+    case "torus knot":
+      mesh = new THREE.Mesh(new THREE.TorusKnotGeometry(0.3, 0.1, 100, 16), material);
       break;
     default: /* PlaneGeometry */;
   }
