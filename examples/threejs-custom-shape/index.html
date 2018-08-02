@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+<head>
+  <title>three.js custom shapes</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="../../libraries/three.js"></script>
+  <script src="../../libraries/three.orbitcontrols.js"></script>
+  <script src="shapes/heart.js"></script>
+  <script src="scripts/sketch.js"></script>
+</head>
+<body>
+
+  <table><tr><td>
+
+  <label>shape:</label>
+  <select id="shape-input" onclick="changeShape()">
+    <option>heart</option>
+  </select>
+
+  <div id="cnv-container"></div>
+
+</td><td>
+
+  <h1>Custom Shapes in THREE.js</h1>
+  <small>These are the current custom shapes that I have created and that are available.</small><br>
+  <small>Check marks indicate which shapes I have implemented while the cross marks indicate which shapes I have not implemented yet.</small>
+
+  <ul>
+    <li>&#9989;heart</li>
+    <li>&#10060;tbd</li>
+  </ul>
+</body>
+</html>
