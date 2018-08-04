@@ -49,9 +49,8 @@ function changeShape() {
       toggleAutoRotation("on");
       break;
     case "confetti":
-      let confetti = new Confetti(0.02, {r: 255, g: 0, b: 0}, {r: 255, g: 220, b: 0});
-      mesh = confetti.mesh;
-      toggleAutoRotation("off");
+      mesh = new Confetti(0.02, {r: 255, g: 220, b: 0}).mesh;
+      toggleAutoRotation("on");
       break;
     default: break;
   }

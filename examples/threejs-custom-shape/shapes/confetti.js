@@ -16,8 +16,8 @@ class Confetti {
 	update() {
     this.timer++;
     let timer = this.timer * 0.01;
+    /* Desmos Equation: y\ =\ -\sin\left(\frac{2\pi x+\pi}{2}\right) */
     let vel = {
-      /* Desmos Equation: y\ =\ -\sin\left(\frac{2\pi x+\pi}{2}\right) */
       x: -0.002 * Math.sin((2 * Math.PI * timer + Math.PI) * 0.5),
       y: -0.002
     };
