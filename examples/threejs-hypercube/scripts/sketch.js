@@ -3,6 +3,9 @@ window.onload = () => {
   animate();
 };
 
+// Coding Train Live Stream with 4d to 2d
+// https://www.youtube.com/watch?v=D9BoBSkLvFo
+
 const WIDTH = 640, HEIGHT = 480;
 let camera, scene, renderer, orbit;
 let geometry, material, mesh;
