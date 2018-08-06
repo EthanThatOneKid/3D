@@ -7,7 +7,24 @@ const WIDTH = 640, HEIGHT = 480;
 let camera, scene, renderer, orbit;
 let geometry, material, mesh;
 let autoRotationAmount = 0.1;
-let cube;
+
+let points = [];
+points[0] = new Vector4d(-1, -1, -1, 1);
+points[1] = new Vector4d(1, -1, -1, 1);
+points[2] = new Vector4d(1, 1, -1, 1);
+points[3] = new Vector4d(-1, 1, -1, 1);
+points[4] = new Vector4d(-1, -1, 1, 1);
+points[5] = new Vector4d(1, -1, 1, 1);
+points[6] = new Vector4d(1, 1, 1, 1);
+points[7] = new Vector4d(-1, 1, 1, 1);
+points[8] = new Vector4d(-1, -1, -1, -1);
+points[9] = new Vector4d(1, -1, -1, -1);
+points[10] = new Vector4d(1, 1, -1, -1);
+points[11] = new Vector4d(-1, 1, -1, -1);
+points[12] = new Vector4d(-1, -1, 1, -1);
+points[13] = new Vector4d(1, -1, 1, -1);
+points[14] = new Vector4d(1, 1, 1, -1);
+points[15] = new Vector4d(-1, 1, 1, -1);
 
 function init() {
   camera = new THREE.PerspectiveCamera(70, WIDTH / HEIGHT, 0.01, 10);
@@ -15,8 +32,8 @@ function init() {
 
   cube = new Hypercube(1);
 
-  let x = project3d(cube.cube[0][0][0][0], 0);
-  console.log(x);
+  //let x = project3d(cube.cube[0][0][0][0], 0);
+  //console.log(x);
 
   scene = new THREE.Scene();
 
@@ -66,19 +83,21 @@ function project3d(v, a) {
     [0, 0,           1, 0],
     [0, Math.sin(a), 0, Math.cos(a)]
   ]);
+  */
 
   let rotationZW = new Matrix([
     [1, 0, 0,            0],
     [0, 1, 0,            0],
-    [0, 0, Math.cos(a2), -1 * Math.sin(a2)],
-    [0, 0, Math.sin(a2), Math.cos(a2)]
+    [0, 0, Math.cos(a), -1 * Math.sin(a)],
+    [0, 0, Math.sin(a), Math.cos(a)]
   ]);
-*/
-  console.log(v);
-  let p1 = new Matrix([[v.x], [v.y], [v.z], [v.w]]);
-  p1.log();
-  let a1 = double_rot.mult(p1);
-  let temp_w = 1.0 / (1 - a1.data[3][0]);
+
+
+  let rotated = double_rot.mult(v);
+  rotated = rotationZW.mult(rotated);
+
+  let distance = 2;
+  let temp_w = 1 / (1 - rotated.w);
 
   let projection = new Matrix([
     [temp_w, 0, 0, 0],
