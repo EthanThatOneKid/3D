@@ -63,9 +63,10 @@ class Mandelbrot {
         //if (n == iterations) bright = -1;
         let roundResult = Math.round(Math.log(this.detail));
         let threshToAppear = 0.075;
-        let isEdgePiece = n < iterations && n / iterations > threshToAppear;
-        //gimmeRow.push(bright >= threshToAppear ? "#" : "-");
-        gimmeRow.push(isEdgePiece);
+        //let isEdgePiece = n < iterations && n / iterations > threshToAppear;
+        let isEdgePiece = n == iterations;
+        gimmeRow.push(isEdgePiece ? "#" : "-");
+        //gimmeRow.push(isEdgePiece);
         if (isEdgePiece) this.points.push([
           Number(x.toFixed(roundResult)) - (this.size * 0.5),
           Number(y.toFixed(roundResult)) - (this.size * 0.5)
@@ -73,14 +74,14 @@ class Mandelbrot {
       }
       this.matrix.push(gimmeRow);
     }
-    //this.points = this.createPath();
+    this.points = this.createPath();
 
     this.mesh = this.createMesh();
   }
 
   createPath() {
     console.log(this.matrix);
-    let turtle = new Turtle(this.matrix);
+    let turtle = new Turtle(JSON.parse(JSON.stringify(this.matrix)));
     turtle.sniff();
     return turtle.trail;
   }
@@ -91,6 +92,11 @@ class Mandelbrot {
 
 }
 
+//                           ___________
+//     ...        ...      ( The Turtle )___
+//   ..    ..   ..   ..   <(____________)__`')
+// ..        ...       ...  /_/\_\ /_/\_\
+
 class Turtle {
   constructor(matrix) {
     this.x = 0;
@@ -99,119 +105,45 @@ class Turtle {
     this.trail = [];
     this.locateStartingPoint();
   }
-  advance() {
-    let r = 1;
-    let gimme;
-    while (true) {
-      for (let i = -r; i <= r; i++) {
-        for (let j = -r; j <= r; j++) {
-          if (i == 0 && j == 0) continue;
-          if (y + i > this.matrix.length || y + i < 0 || x + j > this.matrix.length || x + j < 0) continue;
-          if (this.matrix[this.y + i][this.x + j]) {
-            gimme = [j, i];
-            break;
-          }
+  locateStartingPoint() {
+    for (let y = 0; y < this.matrix.length; y++) {
+      for (let x = 0; x < this.matrix[y].length; x++) {
+        if (this.matrix[y][x] == "#") {
+          this.x = x;
+          this.y = y;
+          return;
         }
       }
     }
-    this.x += gimme[0];
-    this.y += gimme[1];
   }
-  locateStartingPoint() {
-    let x = 0, y = 0;
-    while (!this.matrix[y][x]) {
-      x = Math.floor(Math.random() * this.matrix.length);
-      y = Math.floor(Math.random() * this.matrix.length);
+  checkForBonk(x, y) {
+    return x >= this.matrix.length || x < 0 || y >= this.matrix.length || y < 0;
+  }
+  checkIfOpen(x, y) {
+    if (this.checkForBonk(x, y)) return false;
+    if (this.matrix[y][x] == "-") return false;
+    for (let i = -1; i <= 1; i++) {
+      for (let j = -1; j <= 1; j++) {
+        if (i == 0 && j == 0) continue;
+        if (this.checkForBonk(x + j, y + i)) continue;
+        if (this.matrix[y + i][x + j] == "-") return true;
+      }
     }
-    this.x = x;
-    this.y = y;
+    return false;
   }
   sniff() {
-    //let hasAnyLeft = false;
-    for (let r = 1; r <= this.matrix.length * 0.5; r++) {
-      for (let i = -r; i <= r; i++) {
-        for (let j = -r; j <= r; j++) {
-          if (i == 0 && j == 0) continue;
-          if (this.y + i > this.matrix.length || this.y + i < 0 || this.x + j > this.matrix.length || this.x + j < 0) continue;
-          try {
-            if (this.matrix[this.y + i][this.x + j]) {
-              //hasAnyLeft = true;
-              this.matrix[this.y + i][this.x + j] = false;
-              this.x += j; this.y += i;
-              this.trail.push([this.x, this.y]);
-              this.sniff();
-            }
-          } catch (e) {
-            continue;
-          }
+    for (let i = -1; i <= 1; i++) {
+      for (let j = -1; j <= 1; j++) {
+        if (i == 0 && j == 0) continue;
+        //console.log(this.x, this.y)
+        if (this.checkIfOpen(this.x + j, this.y + i)) {
+          this.matrix[this.y][this.x] = "-";
+          this.trail.push([this.x, this.y]);
+          this.x += j;
+          this.y += i;
+          this.sniff();
         }
       }
     }
-    //if (hasAnyLeft) this.advance();
   }
 }
-
-/*
-var minval = -0.5;
-var maxval = 0.5;
-
-var minSlider;
-var maxSlider;
-
-var frDiv;
-
-function setup() {
-  createCanvas(200, 200);
-  pixelDensity(1);
-
-  minSlider = createSlider(-2.5, 0, -2.5, 0.01);
-  maxSlider = createSlider(0, 2.5, 2.5, 0.01);
-
-  frDiv = createDiv('');
-}
-
-function draw() {
-  var maxiterations = 100;
-
-  loadPixels();
-  for (var x = 0; x < width; x++) {
-    for (var y = 0; y < height; y++) {
-
-      var a = map(x, 0, width, minSlider.value(), maxSlider.value());
-      var b = map(y, 0, height, minSlider.value(), maxSlider.value());
-
-      var ca = a;
-      var cb = b;
-
-      var n = 0;
-
-      while (n < maxiterations) {
-        var aa = a * a - b * b;
-        var bb = 2 * a * b;
-        a = aa + ca;
-        b = bb + cb;
-        if (a * a + b * b > 16) {
-          break;
-        }
-        n++;
-      }
-
-      var bright = map(n, 0, maxiterations, 0, 1);
-      bright = map(sqrt(bright), 0, 1, 0, 255);
-
-      if (n == maxiterations) {
-        bright = 0;
-      }
-
-      var pix = (x + y * width) * 4;
-      pixels[pix + 0] = bright;
-      pixels[pix + 1] = bright;
-      pixels[pix + 2] = bright;
-      pixels[pix + 3] = 255;
-    }
-  }
-  updatePixels();
-
-  frDiv.html(floor(frameRate()));
-}
-*/

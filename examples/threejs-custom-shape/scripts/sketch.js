@@ -49,7 +49,7 @@ function changeShape(str) {
       toggleAutoRotation("on");
       break;
     case "mandelbrot":
-      let mandelbrot = new Mandelbrot(1, 100, 1);
+      let mandelbrot = new Mandelbrot(1, 20, 1);
       console.log(mandelbrot);
       mesh = mandelbrot.mesh;
       toggleAutoRotation("off");
