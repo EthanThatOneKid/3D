@@ -5,8 +5,8 @@ window.onload = () => {
 
 const WIDTH = 400, HEIGHT = 400;
 let camera, scene, renderer, orbit;
-let heart, geometry, material, mesh;
-let currentShape = "confetti";
+let geometry, material, mesh;
+let currentShape = "heart";
 let autoRotationAmount = 0.01;
 
 function init() {
@@ -15,12 +15,8 @@ function init() {
 
   scene = new THREE.Scene();
 
-  heart = new Heart(0.02);
-
-  geometry = heart.geometry;
   material = new THREE.MeshNormalMaterial();
-  mesh = new THREE.Mesh(geometry, material);
-  scene.add(mesh);
+  changeShape(currentShape);
 
   renderer = new THREE.WebGLRenderer({
     antialias: true
@@ -39,9 +35,9 @@ function animate() {
   renderer.render(scene, camera);
 }
 
-function changeShape() {
+function changeShape(str) {
   // https://threejs.org/docs/#api/extras/core/Path.bezierCurveTo
-  currentShape = $('#shape-input').find(":selected").text();
+  currentShape = str || $('#shape-input').find(":selected").text();
   scene.remove(mesh);
   switch (currentShape) {
     case "heart":
@@ -51,6 +47,12 @@ function changeShape() {
     case "confetti":
       mesh = new Confetti(0.02, {r: 255, g: 220, b: 0}).mesh;
       toggleAutoRotation("on");
+      break;
+    case "mandelbrot":
+      let mandelbrot = new Mandelbrot(1, 100, 1);
+      console.log(mandelbrot);
+      mesh = mandelbrot.mesh;
+      toggleAutoRotation("off");
       break;
     default: break;
   }
