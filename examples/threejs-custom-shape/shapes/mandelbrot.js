@@ -135,12 +135,12 @@ class Turtle {
     for (let i = -1; i <= 1; i++) {
       for (let j = -1; j <= 1; j++) {
         if (i == 0 && j == 0) continue;
-        //console.log(this.x, this.y)
         if (this.checkIfOpen(this.x + j, this.y + i)) {
           this.matrix[this.y][this.x] = "-";
           this.trail.push([this.x, this.y]);
           this.x += j;
           this.y += i;
+          console.log(this.x, this.y);
           this.sniff();
         }
       }
