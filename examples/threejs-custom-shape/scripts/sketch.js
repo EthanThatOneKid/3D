@@ -48,6 +48,10 @@ function changeShape(str) {
       mesh = new Confetti(0.02, {r: 255, g: 220, b: 0}).mesh;
       toggleAutoRotation("on");
       break;
+    case "star":
+      mesh = new Star(5).mesh;
+      toggleAutoRotation("on");
+      break;
     case "mandelbrot":
       let mandelbrot = new Mandelbrot(1, 20, 1);
       console.log(mandelbrot);

@@ -58,15 +58,10 @@ class Mandelbrot {
           if (a * a + b * b > arbitraryNumberIndicatingApproachToInfinity) break;
         }
 
-        //let bright = Mandelbrot.map(n, 0, iterations, 0, 1);
-        //bright = Math.sqrt(bright);
-        //if (n == iterations) bright = -1;
         let roundResult = Math.round(Math.log(this.detail));
         let threshToAppear = 0.075;
-        //let isEdgePiece = n < iterations && n / iterations > threshToAppear;
         let isEdgePiece = n == iterations;
         gimmeRow.push(isEdgePiece ? "#" : "-");
-        //gimmeRow.push(isEdgePiece);
         if (isEdgePiece) this.points.push([
           Number(x.toFixed(roundResult)) - (this.size * 0.5),
           Number(y.toFixed(roundResult)) - (this.size * 0.5)
