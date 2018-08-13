@@ -1,5 +1,5 @@
 class Star {
-  constructor(corners = 5, r = 0.5, detail = 1) {
+  constructor(corners = 5, r = 0.5, detail = 1000) {
     this.corners = corners;
     this.r = r;
     this.detail = detail;
@@ -7,13 +7,15 @@ class Star {
   }
   createShape() {
     let shape = new THREE.Shape();
-    for (let a = 0; a <= Math.PI * 2; a += Math.PI * 2 * 0.003 / this.detail) {
+    for (let a = 0; a <= Math.PI * 2; a += Math.PI * 2 / this.detail) {
       let r = Math.cos(a * this.corners);
-      let point = Star.polarToCartesian(r, a);
-      shape.lineTo(point.x, point.y);
+      if (Math.abs(r.toFixed(4)) == 1) {
+        console.log(r)
+        let point = Star.polarToCartesian(r, a);
+        shape.lineTo(point.x, point.y);
+      }
     }
     return shape;
-
   }
   createMesh() {
     let geometry = new THREE.ShapeGeometry(this.createShape());
