@@ -5,13 +5,17 @@ window.onload = () => {
 
 const WIDTH = 400, HEIGHT = 400;
 let camera, scene, renderer, orbit;
-let geometry, material, mesh;
+let stats, geometry, material, mesh;
 let currentShape = "heart";
 let autoRotationAmount = 0.01;
 
 function init() {
   camera = new THREE.PerspectiveCamera(70, WIDTH / HEIGHT, 0.01, 10);
   camera.position.z = 1;
+
+  stats = new Stats();
+  stats.showPanel(0);
+  $("body").append(stats.dom);
 
   scene = new THREE.Scene();
 
@@ -28,11 +32,13 @@ function init() {
 }
 
 function animate() {
+  stats.begin();
   requestAnimationFrame(animate);
   mesh.rotation.x += autoRotationAmount;
   mesh.rotation.y += autoRotationAmount;
   mesh.rotation.z += autoRotationAmount;
   renderer.render(scene, camera);
+  stats.end();
 }
 
 function changeShape(str) {
