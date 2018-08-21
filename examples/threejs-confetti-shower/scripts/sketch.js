@@ -21,7 +21,8 @@ function init() {
   $("#cnv-container").append(renderer.domElement);
 
   stats = new Stats();
-  stats.showPanel(0);
+  stats.dom.style.top = stats.dom.style.left = "";
+  stats.dom.style.bottom = stats.dom.style.right = "0";
   $("body").append(stats.dom);
 
   orbit = new THREE.OrbitControls(camera, renderer.domElement);
