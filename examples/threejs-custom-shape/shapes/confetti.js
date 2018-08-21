@@ -83,8 +83,7 @@ class ConfettiShower {
   }
 
   createNewConfetti() {
-    let gimme = new Confetti(0.02,
-      this.theme,
+    let gimme = new Confetti(0.02, this.theme,
       {x: Math.random() - this.radius, y: Math.random()}
     );
     this.confetties.push(gimme);

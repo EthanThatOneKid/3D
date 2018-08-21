@@ -2,25 +2,23 @@ class Hypercube {
 
   constructor(r) {
     this.r = r;
+    this.rotation = {x: 0, y: 0, z: 0, w: 0};
     this.data = [];
     for (let x = 0; x < 2; x++) {
       let gimmeX = [];
       for (let y = 0; y < 2; y++) {
         let gimmeY = [];
         for (let z = 0; z < 2; z++) {
-          //let vertex = [(x - 0.5) * r, (y - 0.5) * r, (z - 0.5) * r];
-          //gimmeY.push(tf.tensor(vertex));
-          ///*
           let gimmeZ = [];
           for (let w = 0; w < 2; w++) {
             let vertex = [(x - 0.5) * r, (y - 0.5) * r, (z - 0.5) * r, (w - 0.5) * r];
             gimmeZ.push(tf.tensor(vertex));
           }
           gimmeY.push(gimmeZ);
-          //*/
         } gimmeX.push(gimmeY);
       } this.data.push(gimmeX);
     }
+    this.connections = [[9,8],[9,1],[9,11],[9,13],[5,4],[5,7],[5,13],[5,1],[3,2],[3,11],[3,7],[3,1],[15,14],[15,11],[15,7],[15,13],[0,8],[0,2],[0,4],[0,1],[10,11],[10,8],[10,2],[10,14],[12,14],[12,13],[12,4],[12,8],[6,7],[6,14],[6,4],[6,2]];
   }
   project3d(xAngle = 0, yAngle = 0, zAngle = 0) {
     let result = [];
@@ -44,21 +42,15 @@ class Hypercube {
               ]).mul(tf.scalar(this.r * 10));
               gimmeProjectionData = projection.dataSync();
             });
-            let projectedVector = tf.tensor([
-              gimmeProjectionData[0],
-              gimmeProjectionData[1],
-              gimmeProjectionData[2]
-            ]);
-            result.push(projectedVector);
+            result.push(gimmeProjectionData);
           }
         }
       }
-    }
-    return result;
+    } return result;
   }
   toMesh() {
-    let projected = this.project3d(45);
-    return Hypercube.toMesh(projected);
+    let projected = this.project3d(this.rotation.x, this.rotation.y, this.rotation.z, this.rotation.w);
+    return Hypercube.toMesh(projected, this.connections);
   }
   log() {
     console.log("--- Hypercube ---");
@@ -72,15 +64,25 @@ class Hypercube {
     }
     console.log("-----------------");
   }
-  static toMesh(verts) {
-    console.log("TO MESH")
+  static toMesh(verts, connections) {
     let group = new THREE.Group();
-    for (let tens of verts) {
-      let vert = [...tens.dataSync()];
+    for (let i = 0; i < verts.length; i++) {
       let geometry = new THREE.SphereGeometry(0.01);
-      console.log(vert);
-      geometry.translate(...vert);
+      geometry.translate(...verts[i]);
       group.add(new THREE.Mesh(geometry, new THREE.MeshNormalMaterial()));
-    } return group;
+    }
+    for (let connection of connections) connect(connection[0], connection[1]);
+    return group;
+
+    function connect(i, j) {
+      let a = verts[i],
+          b = verts[j];
+      let lineGeometry = new THREE.Geometry();
+      lineGeometry.vertices.push(
+    	  new THREE.Vector3(a[0], a[1], a[2]),
+    	  new THREE.Vector3(b[0], b[1], b[2])
+      );
+      group.add(new THREE.Line(lineGeometry, new THREE.LineBasicMaterial()));
+    }
   }
 }

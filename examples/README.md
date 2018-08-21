@@ -3,3 +3,4 @@
 * [threejs-test](https://htmlpreview.github.io/?https://github.com/EthanThatOneKid/3D/blob/master/examples/threejs-test/index.html)
 * [threejs-custom-shape](https://htmlpreview.github.io/?https://github.com/EthanThatOneKid/3D/blob/master/examples/threejs-custom-shape/index.html)
 * [threejs-confetti-shower](https://htmlpreview.github.io/?https://github.com/EthanThatOneKid/3D/blob/master/examples/threejs-confetti-shower/index.html)
+* [threejs-hypercube](https://htmlpreview.github.io/?https://github.com/EthanThatOneKid/3D/blob/master/examples/threejs-hypercube/index.html)

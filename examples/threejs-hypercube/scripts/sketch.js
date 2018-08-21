@@ -8,33 +8,25 @@ window.onload = () => {
 
 const WIDTH = 640, HEIGHT = 480;
 let camera, scene, renderer, orbit;
-let geometry, material, mesh, cube;
+let cube, hypercubemesh;
 let autoRotationAmount = 0.01;
+
+let stats = new Stats();
+stats.dom.style.top = stats.dom.style.left = "";
+stats.dom.style.bottom = stats.dom.style.right = "0";
+document.body.appendChild(stats.dom);
 
 function init() {
   camera = new THREE.PerspectiveCamera(70, WIDTH / HEIGHT, 0.01, 10);
   camera.position.z = 1;
 
-  cube = new Hypercube(0.2);
-  cube.log();
-
   scene = new THREE.Scene();
 
-  geometry = new THREE.BoxGeometry(0.2, 0.2, 0.2);
-  material = new THREE.MeshBasicMaterial({
-    color: 0x2194ce,
-    transparent: true,
-    opacity: 0.8,
-    wireframe: true
-  });
-  mesh = new THREE.Mesh(geometry, material);
-  //scene.add(mesh);
-  let hypercubemesh = cube.toMesh();
+  cube = new Hypercube(0.2);
+  hypercubemesh = cube.toMesh();
   scene.add(hypercubemesh);
 
-  renderer = new THREE.WebGLRenderer({
-    antialias: true
-  });
+  renderer = new THREE.WebGLRenderer({antialias: true});
   renderer.setSize(WIDTH, HEIGHT);
   $("#cnv-container").append(renderer.domElement);
 
@@ -43,8 +35,13 @@ function init() {
 
 function animate() {
   requestAnimationFrame(animate);
-  mesh.rotation.x += autoRotationAmount;
-  mesh.rotation.y += autoRotationAmount;
-  mesh.rotation.z += autoRotationAmount;
+  stats.begin();
+
+  scene.remove(hypercubemesh);
+  hypercubemesh = cube.toMesh();
+  scene.add(hypercubemesh);
+
+  cube.rotation.x += autoRotationAmount;
   renderer.render(scene, camera);
+  stats.end();
 }
