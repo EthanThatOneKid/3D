@@ -20,8 +20,8 @@ function init() {
   scene = new THREE.Scene();
 
   cube = new Hypercube(0.2);
-  hypercubemesh = cube.toMesh();
-  scene.add(hypercubemesh);
+  cube.updateMesh();
+  scene.add(cube.mesh);
 
   renderer = new THREE.WebGLRenderer({antialias: true});
   renderer.setSize(WIDTH, HEIGHT);
@@ -34,11 +34,11 @@ function animate() {
   requestAnimationFrame(animate);
   stats.begin();
 
-  scene.remove(hypercubemesh);
-  hypercubemesh = cube.toMesh();
-  scene.add(hypercubemesh);
-
+  scene.remove(cube.mesh);
   cube.rotation.x += autoRotationAmount;
+  cube.updateMesh();
+  scene.add(cube.mesh);
+
   renderer.render(scene, camera);
   stats.end();
 }
