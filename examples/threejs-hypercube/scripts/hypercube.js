@@ -47,7 +47,7 @@ class Hypercube {
           }
         }
       }
-    } 
+    }
     double_rot.dispose();
     return result;
   }
@@ -72,12 +72,8 @@ class Hypercube {
 
   static toMesh(verts, connections) {
     let group = new THREE.Group();
-    for (let i = 0; i < verts.length; i++) {
-      let geometry = new THREE.SphereGeometry(0.01);
-      geometry.translate(...verts[i]);
-      group.add(new THREE.Mesh(geometry, new THREE.MeshNormalMaterial()));
-    }
-    for (let connection of connections) connect(connection[0], connection[1]);
+    for (let connection of connections)
+      connect(connection[0], connection[1]);
     return group;
 
     function connect(i, j) {
